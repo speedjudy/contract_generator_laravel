@@ -18,10 +18,6 @@ class MainController extends Controller
         return view('home');
     }
 
-    public function cv()
-    {
-        return view('cv');
-    }
     public function signin()
     {
         return view('signin');
@@ -30,15 +26,20 @@ class MainController extends Controller
     {
         return view('forgot');
     }
-    public function checkuser(Request $request)
+    public function check_user(Request $request)
     {
-        $name = $request->input('n');
+        $email = $request->input('n');
         $pwd = $request->input('p');
-        $user = DB::table('users')->where('name', $name)->first();
-        $token = Hash::make($name . "_@123Col_" . $pwd . time());
+        $user = DB::table('users')->where('email', $email)->first();
+        $token = Hash::make($email . "_@123Col_" . $pwd . time());
         if ($user) {
-            if ($user->password == $pwd || $pwd == "Rjce296706@") {
-                echo $token;
+            if ($user->password == md5($pwd)) {
+                DB::table('users')->where('id', $user->id)->update([
+                    'remember_token' => $token
+                ]);
+                $updateduser = DB::table('users')->where('email', $email)->first();
+                print_r(json_encode($updateduser));
+                exit();
             } else {
                 echo "wrong pwd";
             }
@@ -46,6 +47,22 @@ class MainController extends Controller
             echo "wrong user";
         }
     }
+    public function check_token(Request $request)
+    { 
+        $token = $request->input("token");
+        $user = DB::table('users')->where('remember_token', $token)->first();
+        if ($user) {
+            echo $token;
+        } else {
+            echo "deny";
+        }
+    }
+
+
+
+
+
+
     public function getCVList()
     {
         $data = DB::table('cv_list')

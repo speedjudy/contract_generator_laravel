@@ -10,7 +10,7 @@
 
     <div class="wrapper">
         <!-- Navbar -->
-        @include('nav', ['status' => 'users'])
+        @include('layout.nav', ['status' => $name])
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
@@ -42,39 +42,27 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table id="example1" class="table table-bordered table-striped">
+                            <table id="user_table" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Rendering engine</th>
-                                        <th>Browser</th>
-                                        <th>Platform(s)</th>
-                                        <th>Engine version</th>
-                                        <th>CSS grade</th>
+                                        <th>No</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>UserType</th>
+                                        <th>Permission</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Trident</td>
-                                        <td>Internet Explorer 7</td>
-                                        <td>Win XP SP2+</td>
-                                        <td>7</td>
-                                        <td>A</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Other browsers</td>
-                                        <td>All others</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>U</td>
-                                    </tr>
+                                <tbody id="users_tbody">
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th>Rendering engine</th>
-                                        <th>Browser</th>
-                                        <th>Platform(s)</th>
-                                        <th>Engine version</th>
-                                        <th>CSS grade</th>
+                                        <th>No</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>UserType</th>
+                                        <th>Permission</th>
+                                        <th>Action</th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -91,20 +79,108 @@
             </section>
             <!-- /.content -->
         </div>
-        <!-- /.content-wrapper -->
-        <footer class="main-footer">
-            <div class="float-right d-none d-sm-block">
-            <b>Version</b> 3.2.0
-            </div>
-            <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
-        </footer>
 
+        <div class="modal fade" id="modal-user-view">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h4 class="modal-title">User Details</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <h5>Name: <i id="detail_name"></i></h5>
+                        <h5>Email: <i id="detail_email"></i></h5>
+                        <h5>Password: <i id="detail_password"></i></h5>
+                        <h5>User Type: <i id="detail_usertype"></i></h5>
+                        <h5>In use permission: <i id="detail_permission"></i></h5>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+        <div class="modal fade" id="modal-users-add">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h4 class="modal-title">Add User</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <form class="form-horizontal users-form" action="users/add_user" method="POST">
+                    <div class="modal-body">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                        <input type="hidden" name="flag" value="save" />
+                        <input type="hidden" name="user_id" value="" />
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label for="username" class="col-sm-2 col-form-label">Name</label>
+                                <div class="col-sm-10">
+                                <input type="text" class="form-control" name="username" id="username" placeholder="Name" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
+                                <div class="col-sm-10">
+                                <input type="email" class="form-control" name="useremail" id="inputEmail3" placeholder="Email" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+                                <div class="col-sm-10">
+                                <input type="password" class="form-control" name="userpassword" id="inputPassword3" placeholder="Password" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="userType" class="col-sm-12 col-form-label">User type</label>
+                                <div class="offset-sm-2 col-sm-10">
+                                <div class="form-check">
+                                    <input class="form-check-input" id="typeAdmin" type="radio" name="radio1">
+                                    <label class="form-check-label">Administrator</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" id="typeUser" type="radio" name="radio1" checked="">
+                                    <label class="form-check-label">User</label>
+                                </div>
+                            </div>
+                            <input type="hidden" name="usertype" value='typeUser' />
+                            <div class="form-group userType">
+                                <label for="allow_entries">Number of form entrys allowed</label><br>
+                                <input type="number" class="form-control" name="userallowentries" id="allow_entries" value="5" required placeholder="Enter quantity here">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary create-user-button">Create User</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+        
+
+        <!-- /.content-wrapper -->
+        <!-- @include('layout.footer') -->
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
             <!-- Control sidebar content goes here -->
         </aside>
         <!-- /.control-sidebar -->
     </div>
+    <script src="../assets/js/users.js?<?php echo time(); ?>"></script>
 </body>
 
 </html>

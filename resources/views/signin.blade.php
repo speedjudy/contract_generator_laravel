@@ -51,9 +51,9 @@
                 </div>
             </form>
 
-            <p class="mb-1">
+            <!-- <p class="mb-1">
                 <a href="forgot-password">I forgot my password</a>
-            </p>
+            </p> -->
             </div>
             <!-- /.login-card-body -->
         </div>
@@ -74,26 +74,30 @@
         function signIn() {
             var email = $(".user_email").val();
             var pwd = $(".user_pwd").val();
-            location.href = 'users';
-            // $.get(
-            //     "signin/checkuser", {
-            //         n: name, //name
-            //         p: pwd //pwd
-            //     },
-            //     function(res) {
-            //         if (res == "wrong user") {
-            //             alert("The user name is wrong.");
-            //             $("#username").focus();
-            //         } else if (res == "wrong pwd") {
-            //             alert("The password is wrong.");
-            //             $("#pwd").focus();
-            //         } else {
-            //             sessionStorage.setItem("x-t", res);
-            //             sessionStorage.setItem("user", name);
-            //             location.href = 'cvlist';
-            //         }
-            //     }
-            // );
+            $.get(
+                "signin/checkuser", {
+                    n: email, //name
+                    p: pwd //pwd
+                },
+                function(res) {
+                    if (res == "wrong user") {
+                        alert("The user email is wrong.");
+                        $(".user_email").focus();
+                    } else if (res == "wrong pwd") {
+                        alert("The password is wrong.");
+                        $(".user_pwd").focus();
+                    } else {
+                        console.log(res);
+                        sessionStorage.setItem("x-t", res['remember_token']);
+                        sessionStorage.setItem("user", JSON.stringify(res));
+                        if (res['user_type'] === "typeUser") {
+                            location.href = 'shortcode';
+                        } else {
+                            location.href = 'users';
+                        }
+                    }
+                },'json'
+            );
         }
     </script>
 </body>
