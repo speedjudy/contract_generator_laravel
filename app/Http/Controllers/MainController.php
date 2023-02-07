@@ -41,10 +41,10 @@ class MainController extends Controller
                 print_r(json_encode($updateduser));
                 exit();
             } else {
-                echo "wrong pwd";
+                echo json_encode("wrong pwd"); exit();
             }
         } else {
-            echo "wrong user";
+            echo json_encode("wrong user"); exit();
         }
     }
     public function check_token(Request $request)

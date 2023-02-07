@@ -120,4 +120,10 @@ class AdminpanelController extends Controller
         DB::table('shortcodes')->where('id', '=', $id)->delete();
         exit();
     }
+
+    public function templates()
+    {
+        return view('templates', ['name' => 'Templates']);
+    }
+
 }

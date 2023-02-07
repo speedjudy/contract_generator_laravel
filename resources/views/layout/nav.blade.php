@@ -37,7 +37,7 @@
         <img src="../../dist/img/avatar5.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-        <a href="#" class="d-block userinfo_name">Alexander Pierce</a>
+        <a href="#" class="d-block userinfo_name">User</a>
         </div>
     </div>
 
@@ -113,7 +113,11 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                @if($status == 'Templates')
+                <a href="templates" class="nav-link active">
+                @else
+                <a href="templates" class="nav-link">
+                @endif
                 <i class="nav-icon fas fa-book"></i>
                 <p>
                     Templates

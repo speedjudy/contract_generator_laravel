@@ -39,7 +39,6 @@ $(document).ready(function () {
         );
     });
 
-
     //functions
     function getshortcodes() {
         $.get(

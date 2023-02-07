@@ -34,4 +34,11 @@ Route::controller(AdminpanelController::class)->group(function () {
     Route::get('/shortcodes/get_shortcodes', 'shortcodes_get');
     Route::get('/shortcodes/get_shortcode_info', 'shortcode_info_get');
     Route::get('/shortcodes/remove_shortcode', 'shortcode_remove');
+
+    Route::get('/templates', 'templates');
+    Route::get('/templates_add', 'templates_add');
+    // Route::post('/templates/add_shortcode', 'templates_add');
+    // Route::get('/templates/get_templates', 'templates_get');
+    // Route::get('/templates/get_shortcode_info', 'shortcode_info_get');
+    // Route::get('/templates/remove_shortcode', 'shortcode_remove');
 });

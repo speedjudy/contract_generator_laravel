@@ -38,7 +38,7 @@ $(document).ready(function () {
             }, 'json'
         );
     });
-    $(document).on('click', '.add_user', function(){
+    $(document).on('click', '.add_users', function(){
         $("[name=flag]").val('save');
         $(".create-user-button").text('Add User');
         $("#username").val("");

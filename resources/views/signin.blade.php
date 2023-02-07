@@ -62,6 +62,7 @@
 
     <!-- Bootstrap core JavaScript-->
     <script>
+
         $(".btn-signin").click(function() {
             signIn();
         });
@@ -80,6 +81,7 @@
                     p: pwd //pwd
                 },
                 function(res) {
+                    console.log(res);
                     if (res == "wrong user") {
                         alert("The user email is wrong.");
                         $(".user_email").focus();
@@ -91,7 +93,7 @@
                         sessionStorage.setItem("x-t", res['remember_token']);
                         sessionStorage.setItem("user", JSON.stringify(res));
                         if (res['user_type'] === "typeUser") {
-                            location.href = 'shortcode';
+                            location.href = 'shortcodes';
                         } else {
                             location.href = 'users';
                         }

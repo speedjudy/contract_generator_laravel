@@ -100,7 +100,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="shortcode" class="col-sm-2 col-form-label">ShortCode</label>
-                                <div class="col-sm-8">
+                                <div class="col-sm-8" style="display: flex;">
                                 <input type="text" class="form-control" name="shortcode" id="shortcode" placeholder="ShortCode" required>
                                 </div>
                             </div>
